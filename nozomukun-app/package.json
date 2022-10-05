@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "name": "nozomukun-app",
+  "description": "nozomukun",
+  "version": "1.0.0",
+  "author": "krym",
+  "main": "app/background.js",
+  "scripts": {
+    "dev": "nextron",
+    "build": "nextron build",
+    "postinstall": "electron-builder install-app-deps",
+    "symlink": "symlink-dir node_modules/cesium/Build/Cesium renderer/public/cesium",
+    "rebuild-serialport": "electron-rebuild -f -w serialport",
+    "prepare": "yarn symlink && yarn rebuild-serialport"
+  },
+  "dependencies": {
+    "@react-google-maps/api": "^2.12.2",
+    "cesium": "^1.97.0",
+    "electron-serve": "^1.1.0",
+    "electron-store": "^8.1.0",
+    "msgpackr": "^1.7.0-alpha4",
+    "react-timers-hooks": "^1.1.2",
+    "resium": "^1.15.1",
+    "serialport": "^10.4.0"
+  },
+  "devDependencies": {
+    "electron": "^20.1.0",
+    "electron-builder": "^23.3.3",
+    "electron-rebuild": "^3.2.9",
+    "next": "^12.2.5",
+    "nextron": "^8.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "symlink-dir": "^5.0.1"
+  }
+}

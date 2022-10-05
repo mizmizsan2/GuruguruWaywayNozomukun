@@ -1,0 +1,15 @@
+appId: jp.ac.hiroshimacmt.nozomukunapp
+productName: nozomukun-app
+copyright: Copyright © 2022 krym
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+linux:
+  target:
+    - "dir"
+publish: null

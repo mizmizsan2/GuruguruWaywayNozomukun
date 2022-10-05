@@ -1,0 +1,132 @@
+@charset "utf-8";
+.Insta{
+  z-index: 3;
+}
+
+.insta-container {
+  /* border: solid 1px orange; */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* width: 65%;
+  height: 65%; */
+  /* margin-top: 189px; */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  list-style-type: none;
+}
+
+.insta-container li {
+  margin: 0;
+  padding: 0;
+  /* width: 234px;
+  height: 234px; */
+}
+
+.insta-container li a {
+  position: relative;
+  display: flex;
+  /* width: 234px;
+  height: 234px; */
+  text-align: center;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+}
+
+.insta-photo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: cover no-repeat;
+  animation: blur-anime 2s;
+  -webkit-animation: blur-anime 2s;
+}
+
+@keyframes blur-anime {
+  0% {
+    filter: blur(25px);
+    -webkit-filter: blur(25px);
+  }
+
+  100% {
+    filter: blur(0px);
+    -webkit-filter: blur(0px);
+  }
+}
+
+.App {
+  margin: 0;
+  padding: 0;
+  width: 1080px;
+  height: 1080px;
+  background-color: black;
+}
+
+.circle {
+  position: relative;
+  width: 1080px;
+  height: 1080px;
+  background-color: white;
+  clip-path: circle(50% at 50% 50%);
+}
+
+.layer-background {
+  /* border: solid 1px orange; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: white;
+  width: 1080px;
+  height: 1080px;
+}
+
+.backImg {
+  position: absolute;
+  /* animation: zoom-opacity-anime 2s;
+    -webkit-animation: zoom-opacity-anime 2s; */
+  /* height: 100%; */
+  width: 100%;
+  z-index: 10;
+  /* filter: contrast(50%); */
+  filter: opacity(50%);
+}
+
+@keyframes zoom-opacity-anime {
+  0% {
+    width: 0%;
+    filter: opacity(50%);
+    -webkit-filter: opacity(50%);
+  }
+
+  100% {
+    width: 100%;
+    filter: opacity(50%);
+    -webkit-filter: opacity(50%);
+  }
+}
+
+#frameImg {
+  /* border: solid 1px palevioletred; */
+  position: absolute;
+  z-index: 20;
+  width: 1090px;
+  height: 1090px;
+}
+
+.layer-content {
+  /* border: solid 1px palegoldenrod; */
+  position: absolute;
+  color: black;
+  font-weight: 700;
+  font-size: 20px;
+  width: 1080px;
+  height: 1080px;
+  z-index: 15;
+}

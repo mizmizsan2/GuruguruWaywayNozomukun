@@ -1,0 +1,76 @@
+@charset "utf-8";
+/* 文字コードを指定 */
+
+
+/* .App { */
+.Home {
+    margin: 0;
+    padding: 0;
+    width: 1080px;
+    height: 1080px;
+    background-color: black;
+}
+
+.circle {
+    position: relative;
+    width: 1080px;
+    height: 1080px;
+    background-color: white;
+    clip-path: circle(50% at 50% 50%);
+}
+
+.layer-background {
+    /* border: solid 1px orange; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: white;
+    width: 1080px;
+    height: 1080px;
+}
+
+.backImg {
+    position: absolute;
+    animation: zoom-opacity-anime 2s;
+    -webkit-animation: zoom-opacity-anime 2s;
+    /* height: 100%; */
+    width: 100%;
+    z-index: 10;
+    /* filter: contrast(50%); */
+    filter: opacity(50%);
+}
+
+@keyframes zoom-opacity-anime {
+    0% {
+        width: 0%;
+        filter: opacity(50%);
+        -webkit-filter: opacity(50%);
+    }
+
+    100% {
+        width: 100%;
+        filter: opacity(50%);
+        -webkit-filter: opacity(50%);
+    }
+}
+
+#frameImg {
+    /* border: solid 1px palevioletred; */
+    position: absolute;
+    width: 1090px;
+    height: 1090px;
+    z-index: 20;
+}
+
+.layer-content {
+    /* border: solid 1px palegoldenrod; */
+    position: absolute;
+    color: black;
+    font-weight: 700;
+    font-size: 20px;
+    width: 1080px;
+    height: 1080px;
+    /* z-index: 30; */
+    z-index: 15;
+}

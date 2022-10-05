@@ -1,0 +1,4 @@
+# .envファイル
+GOOGLEMAP_APIKEY=xxxxxxxxxxxxxxxxxxxxxxxxx
+SERIALPORT=COMxx
+#SERIALPORT=/dev/ttyACM0
