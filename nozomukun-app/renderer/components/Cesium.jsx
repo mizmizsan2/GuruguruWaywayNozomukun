@@ -1,45 +1,36 @@
 import * as cesium from "cesium";
-import { ipcRenderer } from "electron";
-import react, { useEffect } from "react";
+import React, { useState } from "react";
 import * as resium from "resium";
-import { ControllerInfo } from "../../libs/controller-info";
 import { Controller } from './Controller';
-import Data from "./data2.json";
+import Data from "./data.json";
 
-cesium.Ion.defaultAccessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzYzQyMjQ4My0xZjhiLTQ4MGEtOTdhNy1jYjAzNWFiNDExYTUiLCJpZCI6OTQzNzMsImlhdCI6MTY1MjkyMjE5OH0.1_liv19GGCsU67M7lZHFxgyypVPt4QOxBVylAdGE-VU";
+
+cesium.Ion.defaultAccessToken = process.env.DEFAULTACCESSTOKEN;
 
 // 仮数値
 const cameraOffset = new cesium.Cartesian3(0, 0, 100);
-// const startLng = 132.474889;
-// const startLat = 34.396923;
 let startPosition;
 const zoomAmount = 1000;
 
-const data = [];
+const pinData = [];
 
 const origin = cesium.Cartesian3.fromDegrees(132.461605, 34.396923, 100);
 const headingPitchRoll = cesium.HeadingPitchRoll.fromDegrees(90, 0, 0);
-//const modelMatrix = cesium.Transforms.headingPitchRollToFixedFrame(origin, headingPitchRoll);//.northUpEastToFixedFrame(origin); //.eastNorthUpToFixedFrame(origin);
-
-// ipcRenderer.on("devs", (event, arg) => {
-//     console.log(JSON.stringify(arg));
-// });
-
-const outerCoreRadius = 3450000;
 
 export default function PageCesium(props) {
   startPosition = cesium.Cartesian3.fromDegrees(props.startLng, props.startLat, 100);
 
-  const [flag, setFlag] = react.useState(false);
-  const [speed, setSpeed] = react.useState(0);
-  const [cameraPosition, setCameraPosition] = react.useState(cesium.Cartesian3.fromDegrees(props.startLng + 0.02, props.startLat, 10000));
-  const [modelMatrix, setModelMatrix] = react.useState(cesium.Transforms.headingPitchRollToFixedFrame(origin, headingPitchRoll));
-  let cessta = { zIndex: 3, height: '100%', width: '100%' };
+  const [speed, setSpeed] = useState(0);
+  const [heading, setHeading] = useState(0);
+  const [pitch, setPitch] = useState(0);
+  const [cameraPosition, setCameraPosition] = useState(cesium.Cartesian3.fromDegrees(props.startLng, props.startLat, 10000));
+  let cesiumStyle = { zIndex: 3, height: '100%', width: '100%' };
 
-  for (let i = 0; i < 19; i++) {
-    //データ配列にピンの情報を入れ込む
-    data[i] = { type: "Feature", geometry: { type: "Point", coordinates: cesium.Cartesian3.fromDegrees(Data[i].longitude, Data[i].latitude, 100), }, }
+  for (let i = 0; i < 500; i++) {
+    if (Data[i].longitude != "") {
+      //データ配列にピンの情報を入れ込む
+      pinData[i] = { type: "Feature", geometry: { type: "Point", coordinates: cesium.Cartesian3.fromDegrees(Data[i].longitude, Data[i].latitude, 100), }, }
+    }
   }
 
   const pushPage = (LNG, LAT) => {
@@ -51,10 +42,9 @@ export default function PageCesium(props) {
   };
 
   const animate = () => {
-
     var carto = cesium.Ellipsoid.WGS84.cartesianToCartographic(cameraPosition);
     var lon = cesium.Math.toDegrees(carto.longitude) + speed / 2000.0;
-    var lat = cesium.Math.toDegrees(carto.latitude);
+    var lat = cesium.Math.toDegrees(carto.latitude) + heading / 2000.0;
 
     let s = Math.abs(speed);
     let htarget = cesium.Math.clamp(s * s * 1000, 10000, 100000000);
@@ -71,7 +61,7 @@ export default function PageCesium(props) {
   };
 
   return (
-    <div className="three" style={cessta}>
+    <div className="three" style={cesiumStyle}>
       <Controller
         onButtonClicked={(count) => {
           console.log(`button clicked : ${count}`);
@@ -81,23 +71,31 @@ export default function PageCesium(props) {
           console.log(`button long pressed : ${count}`);
         }}
         onWheelChanged={(val) => {
-          if (props.state == 0)
+          if (props.state == 0){
             setSpeed(cesium.Math.clamp(speed + val, -100, 100));
+          }
         }}
         onUpdateGps={(latlng) => {
           console.log(`gps updated : ${latlng.lat}, ${latlng.lng}`);
+        }}
+        onEulerAngleChanged={(val) => {
+          if (props.state == 0) {
+            if (speed == 0) {
+              setPitch(val.pitch);
+            }else{
+              setHeading(val.heading);
+            }
+          }
         }}
       />
       <div className="point">
         speed = {speed} height={cesium.Ellipsoid.WGS84.cartesianToCartographic(cameraPosition).height}
       </div>
-      {/* <button onClick={() => changeSpeed(+10)}>あっぷ</button> */}
-      {/* <button onClick={() => changeSpeed(-10)}>だうん</button> */}
 
       <resium.Viewer>
         {/* 始点 */}
         <resium.Entity name="start" position={startPosition}>
-          <resium.BillboardGraphics image="images/pin-yellow.png" scale={0.3} />
+          <resium.BillboardGraphics image="images/pin-blue.png" scale={0.3} />
         </resium.Entity>
 
         {/* ライン */}
@@ -109,26 +107,26 @@ export default function PageCesium(props) {
 
         {/* カメラ位置 */}
         <resium.Entity name="camera" position={cameraPosition}>
-          <resium.BillboardGraphics image="images/pin-blue.png" scale={0.3} />
+          <resium.BillboardGraphics image={speed/2000 < 0 ? "images/humanLeft.png" : "images/humanRight.png"} scale={0.5} />
         </resium.Entity>
 
         {/*データベースからのマーカー*/}
 
-        { 
+        {
           (function () {
             const pin = []; //ピンの場所を格納する
-            for (let i = 0; i < 19; i++) {                                                 {/*本当は50000*/}
-              pin.push(cesium.Ellipsoid.WGS84.cartesianToCartographic(cameraPosition).height < 50000000000 && (
-              <resium.Entity onClick={() => pushPage(Data[i].longitude, Data[i].latitude)} name="広島駅" position={data[i].geometry.coordinates}>
-                <resium.BillboardGraphics image='images/pin-red.png' scale={0.3} />
-              </resium.Entity>
-              ));
+            for (let i = 0; i < 500; i++) {
+              if (Data[i].longitude != "") {
+                pin.push(cesium.Ellipsoid.WGS84.cartesianToCartographic(cameraPosition).height < 500000 && (
+                  <resium.Entity onClick={() => pushPage(Data[i].longitude, Data[i].latitude)} name="広島駅" position={pinData[i].geometry.coordinates}>
+                    <resium.BillboardGraphics image='images/pin-red.png' scale={0.3} />
+                  </resium.Entity>
+                ));
+              }
             }
             return <ul>{pin}</ul>;
           }())
-        }        
-
-        <resium.Model url="models/test.glb" modelMatrix={modelMatrix} minimumPixelSize={100} maximumScale={10000} />
+        }
 
         <resium.Camera />
         <resium.CameraLookAt target={cameraPosition} offset={cameraOffset} />

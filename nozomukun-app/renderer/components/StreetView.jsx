@@ -19,12 +19,12 @@ export default function PageStreetView(props) {
     googleMapsApiKey: process.env.GOOGLEMAP_APIKEY, // ,
   });
   const [isMapLoaded, setIsMapLoaded] = React.useState(false);
-  let strsta;
+  let streetViewStyle;
   if (props.state == 1) {
     target = <StreetViewPanorama position={{ lat: props.lat, lng: props.lng }} visible={true} onLoad={panorama => onLoadPanorama(panorama)} />;
-    strsta = { zIndex: 4, height: '100%', width: '100%' };
+    streetViewStyle = { zIndex: 4, height: '100%', width: '100%' };
   } else {
-    strsta = { zIndex: 2, height: '100%', width: '100%' };
+    streetViewStyle = { zIndex: 2, height: '100%', width: '100%' };
   }
 
   const onLoadPanorama = (panorama) => {
@@ -37,7 +37,7 @@ export default function PageStreetView(props) {
       setIsMapLoaded(true); // 待った後にStreetViewPanoramaをセットする
     }
     return (
-      <div className="three" style={strsta}>
+      <div className="three" style={streetViewStyle}>
         <Controller
           onEulerAngleChanged={(val) => {
             if (props.state == 1) {
@@ -79,7 +79,7 @@ export default function PageStreetView(props) {
           }}
         />
 
-        <GoogleMap id="circle-example" mapContainerStyle={containerStyle} zoom={7} center={{ lat: props.lat, lng: props.lng }} onLoad={() => onLoad()}>
+        <GoogleMap id="circle-example" mapContainerStyle={containerStyle} zoom={14} center={{ lat: props.lat, lng: props.lng }} onLoad={() => onLoad()}>
           {isMapLoaded ? target : <></>}
         </GoogleMap>
       </div>

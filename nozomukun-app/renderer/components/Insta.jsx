@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { data } from "./dataChange.jsx";
 import { Controller } from './Controller';
 
-
 class Instagram {
   async getPost() {
-    this.version = 'v14.0';
-    // this.instaBusinessAccount = '17841454450789769';
+    this.version = 'v15.0';
     this.instaBusinessAccount = process.env.INSTA_BUSINESS_ACCOUNT;
-    // this.instaAccessToken = 'EAAU3QDdjrZA0BAI8Yr7ZABaZAyEQ9W5Uy7gQi9OPjtZC1GkCH3QYEnnaYSm8qJIHmw0kvq7X0jA8Eix2ThGrx2EEETgLmqAj4nSfffAeAsZClxAbwLjzHOqo2uZCmZCVe51Nh7BkYLuMZBBP0syef4x7VeBfecyrvZBZCCZBAhxCnhntGie5opP7Gz9jjDJbUsiXbgZD';
     this.instaAccessToken = process.env.INSTA_ACCESS_TOKEN;
-    this.query = 'tajmahal';  //可変にする
+    this.query = 'tajmahal';
     //this.query = data.tagName;  //typescriptのほうを修正してjsonを入れなおす。Excelにタグ用のデータも作る（基本は英語名を全部小文字にしてつなげるだけ）
     this.baseUrl = 'https://graph.facebook.com/' + this.version + '/ig_hashtag_search?user_id=' + this.instaBusinessAccount + '&q=' + this.query + '&access_token=' + this.instaAccessToken;
     return this.resJson();
@@ -52,19 +49,18 @@ class Instagram {
   }
 }
 
-let inssta;
-
 export const PageInsta = (props) => {
+  let instaStyle;
   if (props.state == 3) {
-    inssta = { zIndex: 4 };
+    instaStyle = { zIndex: 4 };
   } else {
-    inssta = { zIndex: 0 };
+    instaStyle = { zIndex: 0 };
   }
 
   let [zoom, setZoom] = useState(4);
   let [page, setPage] = useState(1);
-  let pageMax = 25; //ページ数の上限
-  let zoomMax = 8; //zoomの上限
+  let pageMax = 25;
+  let zoomMax = 8;
 
   let instagram = new Instagram();
   let instaPosts = [];
@@ -81,11 +77,10 @@ export const PageInsta = (props) => {
   let frameImgStyles = { transform: `rotate(${20 * props.zoom}deg)` };
   let containerStyles = { width: `${100 * mag}%`, height: `${100 * mag}%`, marginTop: `${(1080 - (1080 * mag)) / 2}px` };
 
-  let i;
   useEffect(() => {
     const f = async () => {
       if (instaPosts = await instagram.getPost()) {
-        for (i = numOfDisplay * (page - 1); i < numOfDisplay * page; i++) {
+        for (let i = numOfDisplay * (page - 1); i < numOfDisplay * page; i++) {
           if (instaPosts.length < i) {
             break;
           }
@@ -99,9 +94,9 @@ export const PageInsta = (props) => {
   }, [zoom])
 
   return (
-    <div className="three" style={inssta}>
+    <div className="three" style={instaStyle}>
       <Controller
-        onWheelChanged={(val) => {  //valは加速度と仮定する
+        onWheelChanged={(val) => {
           if (props.state == 3 && page >= 1 && page <= pageMax) {
             if (val < 0) {
               if (page <= 1 && zoom <= 0) {
@@ -126,13 +121,10 @@ export const PageInsta = (props) => {
                 }
               }
             }
-            console.log(val);
-            console.log(zoom);
-            console.log(page);
           }
         }}
       />
-      < div className="circle" >
+      <div className="circle">
         <div className="layer-background">
           <img src={backImgFile} className="backImg" />
           <img src="images/frame.png" id="frameImg" style={frameImgStyles} />
@@ -143,7 +135,7 @@ export const PageInsta = (props) => {
           </ul>
         </div>
       </div>
-    </div >
+    </div>
   )
 }
 

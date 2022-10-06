@@ -2,24 +2,20 @@ import React, { useState, useEffect } from "react"
 import { data } from "./dataChange.jsx";
 import { Controller } from './Controller';
 
-
-let expsta;
-
 export const PageEx = (props) => {
+  let exStyle;
   if (props.state == 2) {
-    expsta = { zIndex: 4 };
+    exStyle = { zIndex: 4 };
   } else {
-    expsta = { zIndex: 1 };
+    exStyle = { zIndex: 1 };
   }
 
   let [zoom, setZoom] = useState(0);
 
-  //jsonはファイル名だけだからパスと拡張子も付け足す
   let flagFile = `images/flag/${data.flag}.png`;
-  let backImgFile = `images/backImg/${data.page[zoom].backImg}.jpg`;  //すべてjpgならこれでいいけどpngとかあるなら.jpgはとってデータベース修正する
+  let backImgFile = `images/backImg/${data.page[zoom].backImg}.jpg`;
   let frameImgStyles = { transform: `rotate(${20 * zoom}deg)` };
 
-  //cnmTypeで判定し、カテゴリーをつける(危機遺産はデータベース側を整えていないため保留)
   let [typeC, setTypeC] = useState([]);
   let [typeN, setTypeN] = useState([]);
   let [typeM, setTypeM] = useState([]);
@@ -50,13 +46,13 @@ export const PageEx = (props) => {
   })
 
   return (
-    <div className="three" style={expsta}>
+    <div className="three" style={exStyle}>
       <Controller
-        onWheelChanged={(val) => {  //valは加速度と仮定する
-          if (props.state == 2 && zoom >= 0 && zoom <= 1) { //zoom < ページ上限
+        onWheelChanged={(val) => {
+          if (props.state == 2 && zoom >= 0 && zoom <= data.exNum) {
             if (val < 0) {
-              if (zoom <= 0) {  //zoom <= ページ上限
-                setZoom(0);     //setZoom(ページ上限)
+              if (zoom <= 0) {
+                setZoom(0);
               } else {
                 setZoom(zoom - 1);
               }
@@ -67,15 +63,12 @@ export const PageEx = (props) => {
                 setZoom(zoom + 1);
               }
             }
-            console.log(val);
-            console.log(zoom);
           }
         }}
       />
       <div className="circle">
         <div className="layer-background">
           <img src={backImgFile} className="backImg" />
-          {/* <img src={frameImg} id="frameImg" style={frameImgStyles} /> */}
           <img src="images/frame.png" id="frameImg" style={frameImgStyles} />
         </div>
         <div className="layer-content">
