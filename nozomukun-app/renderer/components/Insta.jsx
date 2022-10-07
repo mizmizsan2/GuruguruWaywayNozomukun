@@ -12,7 +12,7 @@ class Instagram {
     }else{
     this.query = data[propsId].tagName; //そうでなければハッシュタグを検索
     }
-    this.baseUrl = 'https://graph.facebook.com/' + this.version + '/ig_hashtag_search?user_id=' + this.instaBusinessAccount + '&q=' + this.query + '&access_token=' + this.instaAccessToken;
+    this.baseUrl = 'https://graph.facebook.com/' + this.version + '/ig_hashtag_search?user_id=' + this.instaBusinessAccount + '&q=' + this.query + '&access_token=' + this.instaAccessToken; //ハッシュタグのidを取得するためのURLを生成
     return this.resJson();
   }
 
