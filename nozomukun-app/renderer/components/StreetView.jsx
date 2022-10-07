@@ -4,19 +4,20 @@ import { Controller } from './Controller';
 import { waitUntilSymbol } from "next/dist/server/web/spec-extension/fetch-event";
 import { sampleTerrainMostDetailed } from "cesium";
 
+//GoogleMapの画面サイズ
 const containerStyle = {
-  width: "1200px",
-  height: "1200px",
+  width: "1080px",
+  height: "1080px",
 };
 
 export default function PageStreetView(props) {
 
   let target;
-  let panoramA;
-  let Links;
+  let panoramA; //StreetViewPanoramaクラスを一時的に保存する変数
+  let Links;  //ストリートビューの１画面に進める方向の数
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.GOOGLEMAP_APIKEY, // ,
+    googleMapsApiKey: process.env.GOOGLEMAP_APIKEY, 
   });
   const [isMapLoaded, setIsMapLoaded] = React.useState(false);
   let streetViewStyle;
@@ -28,6 +29,8 @@ export default function PageStreetView(props) {
   }
 
   const onLoadPanorama = (panorama) => {
+    //ストリートビューがロードされたら引数panoramaをグローバル変数panoramAに入れる
+    //エラー防止
     panoramA = panorama;
   }
 
@@ -52,7 +55,7 @@ export default function PageStreetView(props) {
             if (props.state == 1 && val >= 0) {
               console.log(panoramA.links);
               Links = panoramA.links;
-              target = 0;
+              let streetTarget = 0;
               //リンクがない場合は何もしない
               if (Links.length >= 1) {
                 let near = 360;
@@ -64,16 +67,16 @@ export default function PageStreetView(props) {
                   if (near > ans) {
                     near = ans;
                     console.log(Links);
-                    target = index;
+                    streetTarget = index;
                   }
                 });
                 // 次に移動するLink先に向きを変える
                 panoramA.setPov({
-                  heading: Links[target].heading,
+                  heading: Links[streetTarget].heading,
                   pitch: 0
                 });
                 // 次のストリートビューに移動する
-                panoramA.setPano(Links[target]['pano']);
+                panoramA.setPano(Links[streetTarget]['pano']);
               }
             }
           }}

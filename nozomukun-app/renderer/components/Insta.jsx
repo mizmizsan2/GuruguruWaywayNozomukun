@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { data } from "./dataChange.jsx";
+import  data from "./data.json";
 import { Controller } from './Controller';
 
 class Instagram {
-  async getPost() {
+  async getPost(propsId) {
     this.version = 'v15.0';
     this.instaBusinessAccount = process.env.INSTA_BUSINESS_ACCOUNT;
     this.instaAccessToken = process.env.INSTA_ACCESS_TOKEN;
-    this.query = 'tajmahal';
-    //this.query = data.tagName;  //typescriptのほうを修正してjsonを入れなおす。Excelにタグ用のデータも作る（基本は英語名を全部小文字にしてつなげるだけ）
+    if(data[propsId].tagName == ""){
+      this.query = 'kosen';
+    }else{
+    this.query = data[propsId].tagName;
+    }
     this.baseUrl = 'https://graph.facebook.com/' + this.version + '/ig_hashtag_search?user_id=' + this.instaBusinessAccount + '&q=' + this.query + '&access_token=' + this.instaAccessToken;
     return this.resJson();
   }
@@ -67,25 +70,27 @@ export const PageInsta = (props) => {
 
   let [list, setList] = useState([]);
 
-  let zoomSet = [{ mag: '0.65', num: '1' }, { mag: '0.7', num: '1' }, { mag: '0.75', num: '1' },
-  { mag: '0.8', num: '1' }, { mag: '0.85', num: '1' }, { mag: '0.9', num: '1' },
-  { mag: '0.95', num: '1' }, { mag: '1', num: '1' }, { mag: '1.05', num: '1' }];
-  let mag = zoomSet[zoom].mag;
+  let zoomSet = [{ scale: '0.65', num: '1' }, { scale: '0.7', num: '1' }, { scale: '0.75', num: '1' },
+  { scale: '0.8', num: '1' }, { scale: '0.85', num: '1' }, { scale: '0.9', num: '1' },
+  { scale: '0.95', num: '1' }, { scale: '1', num: '1' }, { scale: '1.05', num: '1' }];
+  let scale = zoomSet[zoom].scale;
   let num = zoomSet[zoom].num;
   let numOfDisplay = num * num;
-  let backImgFile = `images/backImg/${data.page[page >= data.backImgNum ? data.backImgNum - 1 : page - 1].backImg}.jpg`;  //すべてjpgならこれでいいけどpngとかあるなら.jpgはとってデータベース修正する
-  let frameImgStyles = { transform: `rotate(${20 * props.zoom}deg)` };
-  let containerStyles = { width: `${100 * mag}%`, height: `${100 * mag}%`, marginTop: `${(1080 - (1080 * mag)) / 2}px` };
+  let backImgFile = `images/backImg/${data[props.id].page[page >= data[props.id].backImgNum ? data[props.id].backImgNum - 1 : page - 1].backImg}.jpg`;  //すべてjpgならこれでいいけどpngとかあるなら.jpgはとってデータベース修正する
+  let frameImgStyles = { transform: `rotate(${20 * zoom}deg)` };
+  let containerStyles = { width: `${100 * scale}%`, height: `${100 * scale}%`, marginTop: `${(1080 - (1080 * scale)) / 2}px` };
+
+  let propsId = props.id;
 
   useEffect(() => {
     const f = async () => {
-      if (instaPosts = await instagram.getPost()) {
+      if (instaPosts = await instagram.getPost(propsId)) {
         for (let i = numOfDisplay * (page - 1); i < numOfDisplay * page; i++) {
           if (instaPosts.length < i) {
             break;
           }
-          let frameStyles = { width: `${1080 * mag / num}px`, height: `${1080 * mag / num}px` };
-          let linkStyles = { width: `${1080 * mag / num}px`, height: `${1080 * mag / num}px` };
+          let frameStyles = { width: `${1080 * scale / num}px`, height: `${1080 * scale / num}px` };
+          let linkStyles = { width: `${1080 * scale / num}px`, height: `${1080 * scale / num}px` };
           setList(<li style={frameStyles}><a href={instaPosts[i].link} style={linkStyles}><img className="insta-photo" src={instaPosts[i].img} alt="instagramの画像"></img></a></li>);
         }
       }

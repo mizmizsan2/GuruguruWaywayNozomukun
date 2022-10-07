@@ -16,6 +16,8 @@ export default function Home() {
   const [startLat, setStartLat] = useState(0);
   const [startLng, setStartLng] = useState(0);
 
+  const [id, setId] = useState(0);
+
   return (
     <>
       <Controller
@@ -45,10 +47,10 @@ export default function Home() {
       />
 
       {/*lng={lng} lat={lat}で緯度経度をdataChangeに渡し、説明文やインスタを表示？→緯度経度をdataの中のものと比較するものが必要*/}
-      <PageCesium state={state} setState={setState} setLng={setLng} setLat={setLat} startLat={startLat} startLng={startLng}/>
+      <PageCesium state={state} setState={setState} setLng={setLng} setLat={setLat} startLat={startLat} startLng={startLng} setId={setId}/>
       <PageStreetView state={state} setState={setState} lng={lng} lat={lat} />
-      <PageEx state={state} setState={setState} />
-      <PageInsta state={state} setState={setState}></PageInsta>
+      <PageEx state={state} setState={setState} id={id}/>
+      <PageInsta state={state} setState={setState} id={id}></PageInsta>
     </>
   )
 
