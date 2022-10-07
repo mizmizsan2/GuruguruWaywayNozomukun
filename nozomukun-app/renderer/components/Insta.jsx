@@ -5,12 +5,12 @@ import { Controller } from './Controller';
 class Instagram {
   async getPost(propsId) {
     this.version = 'v15.0';
-    this.instaBusinessAccount = process.env.INSTA_BUSINESS_ACCOUNT;
+    this.instaBusinessAccount = process.env.INSTA_BUSINESS_ACCOUNT; //アクセストークン等の呼び出し
     this.instaAccessToken = process.env.INSTA_ACCESS_TOKEN;
     if(data[propsId].tagName == ""){
-      this.query = 'kosen';
+      this.query = 'kosen'; //タグの名前がデータになければ「kosen」を検索
     }else{
-    this.query = data[propsId].tagName;
+    this.query = data[propsId].tagName; //そうでなければハッシュタグを検索
     }
     this.baseUrl = 'https://graph.facebook.com/' + this.version + '/ig_hashtag_search?user_id=' + this.instaBusinessAccount + '&q=' + this.query + '&access_token=' + this.instaAccessToken;
     return this.resJson();
@@ -53,7 +53,7 @@ class Instagram {
 }
 
 export const PageInsta = (props) => {
-  let instaStyle;
+  let instaStyle; //z-indexの宣言
   if (props.state == 3) {
     instaStyle = { zIndex: 4 };
   } else {

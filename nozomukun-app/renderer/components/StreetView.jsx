@@ -20,7 +20,7 @@ export default function PageStreetView(props) {
     googleMapsApiKey: process.env.GOOGLEMAP_APIKEY, 
   });
   const [isMapLoaded, setIsMapLoaded] = React.useState(false);
-  let streetViewStyle;
+  let streetViewStyle;  //z-indexの宣言
   if (props.state == 1) {
     target = <StreetViewPanorama position={{ lat: props.lat, lng: props.lng }} visible={true} onLoad={panorama => onLoadPanorama(panorama)} />;
     streetViewStyle = { zIndex: 4, height: '100%', width: '100%' };

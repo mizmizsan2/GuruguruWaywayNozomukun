@@ -3,14 +3,14 @@ import data  from "./data.json";
 import { Controller } from './Controller';
 
 export const PageEx = (props) => {
-  let exStyle;
+  let exStyle;  //z-indexの宣言
   if (props.state == 2) {
     exStyle = { zIndex: 4 };
   } else {
     exStyle = { zIndex: 1 };
   }
 
-  let [zoom, setZoom] = useState(0);
+  let [zoom, setZoom] = useState(0);  //回転量の変数
 
   let flagFile = `images/flag/${data[props.id].flag}.png`;
   let backImgFile = `images/backImg/${data[props.id].page[zoom].backImg}.jpg`;
@@ -48,7 +48,7 @@ export const PageEx = (props) => {
   return (
     <div className="three" style={exStyle}>
       <Controller
-        onWheelChanged={(val) => {
+        onWheelChanged={(val) => {  //説明文が最前面でエンコーダが回されると呼び出される
           if (props.state == 2 && zoom >= 0 && zoom <= data[props.id].exNum) {
             if (val < 0) {
               if (zoom <= 0) {
