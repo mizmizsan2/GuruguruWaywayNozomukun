@@ -9,14 +9,14 @@ const PageInsta = dynamic(() => import("../components/Insta"), { ssr: false });
 
 
 export default function Home() {
-  const [state, setState] = useState(0);
-  const [lng, setLng] = useState(0);
-  const [lat, setLat] = useState(0);
+  const [state, setState] = useState(0);  //画面の状態
+  const [lng, setLng] = useState(0);  //緯度経度のデータ
+  const [lat, setLat] = useState(0);  //
 
-  const [startLat, setStartLat] = useState(0);
-  const [startLng, setStartLng] = useState(0);
+  const [startLat, setStartLat] = useState(0);  //GPSから取得した緯度経度の初期値
+  const [startLng, setStartLng] = useState(0);  //
 
-  const [id, setId] = useState(0);
+  const [id, setId] = useState(0);  
 
   return (
     <>
