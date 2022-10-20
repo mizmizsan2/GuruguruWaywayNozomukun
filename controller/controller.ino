@@ -413,8 +413,8 @@ void setup()
   // IMU初期化
   if (isImuInited = sensorImu.begin())
   {
-    delay(650);
-    sensorImu.setExtCrystalUse(true);
+    delay(1000);
+    // sensorImu.setExtCrystalUse(true);
   }
 
   // GPS初期化

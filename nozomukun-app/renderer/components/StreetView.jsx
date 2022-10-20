@@ -45,8 +45,8 @@ export default function PageStreetView(props) {
           onEulerAngleChanged={(val) => {
             if (props.state == 1) {
               panoramA.setPov({
-                heading: val.heading,
-                pitch: val.pitch,
+                heading: val.heading*24,
+                pitch: val.pitch*24,
                 // roll: val.roll
               });
             }

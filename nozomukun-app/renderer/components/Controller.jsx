@@ -74,5 +74,5 @@ export function Controller(props) {
     }
   }, interval);
 
-  return <div>a</div>;
+  return ;
 }

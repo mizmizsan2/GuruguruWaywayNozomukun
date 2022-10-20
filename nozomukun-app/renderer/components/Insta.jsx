@@ -12,7 +12,7 @@ class Instagram {
     }else{
     this.query = data[propsId].tagName; //そうでなければハッシュタグを検索
     }
-    this.baseUrl = 'https://graph.facebook.com/' + this.version + '/ig_hashtag_search?user_id=' + this.instaBusinessAccount + '&q=' + this.query + '&access_token=' + this.instaAccessToken; //ハッシュタグのidを取得するためのURLを生成
+    this.baseUrl = 'https://graph.facebook.com/' + this.version + '/ig_hashtag_search?user_id=' + this.instaBusinessAccount + '&q=' + this.query + '&access_token=' + this.instaAccessToken;
     return this.resJson();
   }
 
@@ -76,7 +76,7 @@ export const PageInsta = (props) => {
   let scale = zoomSet[zoom].scale;
   let num = zoomSet[zoom].num;
   let numOfDisplay = num * num;
-  let backImgFile = `images/backImg/${data[props.id].page[page >= data[props.id].backImgNum ? data[props.id].backImgNum - 1 : page - 1].backImg}.jpg`;  //すべてjpgならこれでいいけどpngとかあるなら.jpgはとってデータベース修正する
+  let backImgFile = `images/backImg/${data[props.id].page[page >= data[props.id].exNum ? data[props.id].exNum - 1 : page - 1].backImg}.jpg`;  //すべてjpgならこれでいいけどpngとかあるなら.jpgはとってデータベース修正する
   let frameImgStyles = { transform: `rotate(${20 * zoom}deg)` };
   let containerStyles = { width: `${100 * scale}%`, height: `${100 * scale}%`, marginTop: `${(1080 - (1080 * scale)) / 2}px` };
 

@@ -261,14 +261,19 @@ function Home() {
                 クリック2
               </Button>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <Button variant="contained" style={{ width: "100%" }} onClick={() => onLongPressButton(1)}>
                 長押し1
               </Button>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <Button variant="contained" style={{ width: "100%" }} onClick={() => onLongPressButton(2)}>
                 長押し2
+              </Button>
+            </Grid>
+            <Grid item xs={4}>
+              <Button variant="contained" style={{ width: "100%" }} onClick={() => onLongPressButton(3)}>
+                長押し3
               </Button>
             </Grid>
             <Grid item xs={8}>
